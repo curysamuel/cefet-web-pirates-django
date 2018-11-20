@@ -5,6 +5,7 @@ from django.db.models import F, ExpressionWrapper, DecimalField, Sum
 from pirates import forms
 from django.shortcuts import redirect
 
+
 class ListaTesourosView(View):
     def get(self, request):
         lista_tesouros = models.Tesouro.objects.annotate(
@@ -27,35 +28,62 @@ class ListaTesourosView(View):
         )
 
 
-class CriarTesouroView(View):
-    def get(self, request):
-        return render(
-            request,
-            template_name='salvar_tesouro.html',
-            context=dict(
-                form=forms.TesouroForm,
+class SalvarTesouroView(View):
+    def get(self, request, pk=None):
+        if pk:
+            form = forms.TesouroForm(
+                instance=models.Tesouro.objects.get(pk=pk)
             )
-        )
+        else:
+            form = forms.TesouroForm
+        if pk:
+            return render(
+                request,
+                template_name='salvar_tesouro.html',
+                context=dict(
+                    form=form,
+                    action='/edit/{}'.format(pk)
+                )
+            )
+
+        else:
+            return render(
+                request,
+                template_name='salvar_tesouro.html',
+                context=dict(
+                    form=form,
+                    action='new'
+                )
+            )
 
     def post(self, request, pk=None):
-        form = forms.TesouroForm(
-            request.POST,
-            request.FILES,
-        )
+        form = forms.TesouroForm(request.POST, request.FILES, instance=models.Tesouro.objects.get(pk=pk))
         if form.is_valid():
             form.save()
             return redirect('list')
-       
-        return render(
-            request,
-            template_name='salvar_tesouro.html',
-            context=dict(
-                form=form,
+
+        if pk:
+            return render(
+                request,
+                template_name='salvar_tesouro.html',
+                context=dict(
+                    form=form,
+                    action='/edit/{}'.format(pk)
+                )
             )
-        )
+
+        else:
+            return render(
+                request,
+                template_name='salvar_tesouro.html',
+                context=dict(
+                    form=form,
+                    action='new'
+                )
+            )
 
 
-class DeletarTesouro(View):
+class DeletarTesouroView(View):
     def get(self, request, pk=None):
         models.Tesouro.objects.get(pk=pk).delete()
         return redirect('list')

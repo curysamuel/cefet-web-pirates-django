@@ -22,8 +22,9 @@ from pirates import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.ListaTesourosView.as_view(), name='list'),
-    path('new', views.CriarTesouroView.as_view(), name='new'),
-    path('delete/<int:pk>', views.DeletarTesouro.as_view() , name='delete'),
+    path('new', views.SalvarTesouroView.as_view(), name='new'),
+    path('delete/<int:pk>', views.DeletarTesouroView.as_view() , name='delete'),
+    path('edit/<int:pk>', views.SalvarTesouroView.as_view() , name='edit'),
 
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

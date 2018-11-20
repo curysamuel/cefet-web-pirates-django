@@ -6,9 +6,10 @@
   <h1>Salvar Tesouro </h1>
 
 	<form method="POST" action="{{ action }}" enctype="multipart/form-data">{% csrf_token %}
-      {{ form.as_p }}
+      {{ form.as_table }}
       <button type="submit">Salvar</button>
     </form>
+
 
 
 {% endblock %}
