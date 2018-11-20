@@ -17,25 +17,27 @@
         </tr>
       </thead>
       <tbody>
+        {% for tesouro in lista_tesouros %}
         <tr>
-          <td><img src="{% static "imgs/exemplo-de-icone.png" %}"></td>
-          <td>Tesouro de exemplo</td>
-          <td>200</td>
-          <td>5</td>
-          <td>1.000</td>
-          <td><img src="" alt="editar"></td>
-          <td><img src="" alt="Deletar"></td>
+          <td><img src="{{tesouro.img_tesouro.url}}"></td>
+          <td>{{tesouro.nome}}</td>
+          <td>{{tesouro.preco}}</td>
+          <td>{{tesouro.quantidade}}</td>
+          <td>{{tesouro.total}}</td>
+          <td><img src="{% static "imgs/edit.png" %}" alt="editar"></td>
+          <td><a href="{% url 'delete' tesouro.pk %}"><img src="{% static "imgs/delete.svg" %}" alt="Deletar"></td>
         </tr>
+        {%endfor%}
       </tbody>
       <tfoot>
         <tr>
           <td colspan="4">Total geral</td>
-          <td><!--Insira aqui o total geral-->  </td>
+          <td>{{ total_geral }}</td>
           <td colspan="2"></td>
         </tr>
       </tfoot>
     </table>
-    <a id="inserir" href="" class="add">+</a>
+    <a id="inserir" href="{% url 'new' %}" class="add">+</a>
   </section>
   <p>Yarr Harr, marujo! Aqui é o temido Barba-Ruiva e você deve me ajudar
       a contabilizar os espólios das minhas aventuras!</p>
